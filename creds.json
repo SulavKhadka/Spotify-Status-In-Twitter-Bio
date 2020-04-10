@@ -1,0 +1,17 @@
+{
+    "twitter": {
+        "consumer_key": "INSERT_YOUR_CONSUMER_KEY_HERE",
+        "consumer_secret": "INSERT_YOUR_CONSUMER_SECRET_HERE",
+        "access_token": "ENTER_YOUR_ACCESS_TOKEN_HERE",
+        "access_token_secret": "ENTER_YOUR_ACCESS_TOKEN_SECRET_HERE"
+    },
+    "spotify": {
+        "username": "ENTER_YOUR_USERNAME_HERE",
+        "client_id": "ENTER_YOUR_CLIENT_ID_HERE",
+        "client_secret": "ENTER_YOUR_CLIENT_SECRET_HERE",
+        "redirect_uri": "https://www.google.com",
+        "scope": "user-read-currently-playing"
+    },
+    "update_time_interval_in_seconds": 30,
+    "refresh_token_offset_in_seconds": 5
+}
