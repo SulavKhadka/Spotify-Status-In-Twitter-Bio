@@ -1,33 +1,56 @@
+import os
+import sys
 import json
 import time
 import webbrowser
 import spotify_client
 import twitter_client
 
-def main():
-    with open("creds.json", "r") as file:
-        script_variables = json.load(file)
+def main(heroku=False):
 
-    twitter_creds = script_variables.get("twitter")
-    spotify_creds = script_variables.get("spotify")
-    refresh_token_offset_in_seconds = script_variables.get("refresh_token_offset_in_seconds")
-    bio_update_time_interval_in_seconds = script_variables.get("update_time_interval_in_seconds")
-    bio_update_time = int(time.time()) + bio_update_time_interval_in_seconds
+    if heroku:
+        try:
+            refresh_token_offset_in_seconds = os.environ["refresh_token_offset_in_seconds"]
+            bio_update_time_interval_in_seconds = os.environ["update_time_interval_in_seconds"]
+            bio_update_time = int(time.time()) + bio_update_time_interval_in_seconds
 
-    if twitter_creds and spotify_creds:
-        consumer_key = twitter_creds.get("consumer_key")
-        consumer_secret = twitter_creds.get("consumer_secret")
-        twitter = twitter_client.TwitterClient(consumer_key, consumer_secret)
+            consumer_key = os.environ["twitter_consumer_key"]
+            consumer_secret = os.environ["twitter_consumer_secret"]
+            twitter = twitter_client.TwitterClient(consumer_key, consumer_secret)
 
-        client_id = spotify_creds.get("client_id")
-        client_secret = spotify_creds.get("client_secret")
-        username = spotify_creds.get("username")
-        redirect_uri = spotify_creds.get("redirect_uri")
-        scope = spotify_creds.get("scope")
-        spotify = spotify_client.SpotifyClient(username, client_id, client_secret, redirect_uri, scope) 
-    
+            client_id = os.environ["spotify_client_id"]
+            client_secret = os.environ["spotify_client_secret"]
+            username = os.environ["spotify_username"]
+            redirect_uri = os.environ["spotify_redirect_uri"]
+            scope = os.environ["spotify_scope"]
+            spotify = spotify_client.SpotifyClient(username, client_id, client_secret, redirect_uri, scope)
+        except Exception as e:
+            print("Failed to read env variables") 
+            raise(e)
     else:
-        print("Whoops")
+        with open("creds.json", "r") as file:
+            script_variables = json.load(file)
+
+        twitter_creds = script_variables.get("twitter")
+        spotify_creds = script_variables.get("spotify")
+        refresh_token_offset_in_seconds = script_variables.get("refresh_token_offset_in_seconds")
+        bio_update_time_interval_in_seconds = script_variables.get("update_time_interval_in_seconds")
+        bio_update_time = int(time.time()) + bio_update_time_interval_in_seconds
+
+        if twitter_creds and spotify_creds:
+            consumer_key = twitter_creds.get("consumer_key")
+            consumer_secret = twitter_creds.get("consumer_secret")
+            twitter = twitter_client.TwitterClient(consumer_key, consumer_secret)
+
+            client_id = spotify_creds.get("client_id")
+            client_secret = spotify_creds.get("client_secret")
+            username = spotify_creds.get("username")
+            redirect_uri = spotify_creds.get("redirect_uri")
+            scope = spotify_creds.get("scope")
+            spotify = spotify_client.SpotifyClient(username, client_id, client_secret, redirect_uri, scope) 
+        
+        else:
+            print("Whoops")
 
     twitter.user_login()
     spotify.user_login()
