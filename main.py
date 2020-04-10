@@ -10,8 +10,8 @@ def main(heroku=False):
 
     if heroku:
         try:
-            refresh_token_offset_in_seconds = os.environ["refresh_token_offset_in_seconds"]
-            bio_update_time_interval_in_seconds = os.environ["update_time_interval_in_seconds"]
+            refresh_token_offset_in_seconds = int(os.environ["refresh_token_offset_in_seconds"])
+            bio_update_time_interval_in_seconds = int(os.environ["update_time_interval_in_seconds"])
             bio_update_time = int(time.time()) + bio_update_time_interval_in_seconds
 
             consumer_key = os.environ["twitter_consumer_key"]
