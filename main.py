@@ -90,4 +90,4 @@ def main(heroku=False):
         time.sleep(5)
 
 
-main()   
+main(heroku=True)   
