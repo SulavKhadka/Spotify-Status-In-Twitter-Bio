@@ -126,7 +126,7 @@ def spotify_login():
     spotify.user_login()
     
 if __name__ == "__main__":
-    app.run(debug=True) 
+    app.run(port=5000) 
 
     refresh_token_offset_in_seconds = int(os.environ["refresh_token_offset_in_seconds"])
     bio_update_time_interval_in_seconds = int(os.environ["update_time_interval_in_seconds"])
