@@ -6,7 +6,7 @@ import webbrowser
 import spotify_client
 import twitter_client
 
-def main(heroku=False):
+'''def old_main(heroku=False):
 
     if heroku:
         try:
@@ -88,6 +88,46 @@ def main(heroku=False):
             print("~~~~~~~~~~~~~~~~~~~~~")
 
         time.sleep(5)
+'''
 
+from flask import Flask, render_template      
 
-main(heroku=True)   
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return render_template("home.html")
+
+@app.route("/twitter_login", methods=['POST'])
+def twitter_login():
+    try:
+        consumer_key = os.environ["twitter_consumer_key"]
+        consumer_secret = os.environ["twitter_consumer_secret"]
+        twitter = twitter_client.TwitterClient(consumer_key, consumer_secret)
+    except Exception as e:
+        print("Failed to read twitter env variables") 
+        raise(e)
+    print("twit")
+    twitter.user_login()
+
+@app.route("/spotify_login", methods=['POST'])
+def spotify_login():
+    try:
+        client_id = os.environ["spotify_client_id"]
+        client_secret = os.environ["spotify_client_secret"]
+        username = os.environ["spotify_username"]
+        redirect_uri = os.environ["spotify_redirect_uri"]
+        scope = os.environ["spotify_scope"]
+        spotify = spotify_client.SpotifyClient(username, client_id, client_secret, redirect_uri, scope)
+    except Exception as e:
+        print("Failed to read spotify env variables") 
+        raise(e)
+    print("spot")
+    spotify.user_login()
+    
+if __name__ == "__main__":
+    app.run(debug=True) 
+
+    refresh_token_offset_in_seconds = int(os.environ["refresh_token_offset_in_seconds"])
+    bio_update_time_interval_in_seconds = int(os.environ["update_time_interval_in_seconds"])
+    bio_update_time = int(time.time()) + bio_update_time_interval_in_seconds

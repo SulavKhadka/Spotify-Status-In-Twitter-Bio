@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+ <head>
+   <meta charset="utf-8">
+   <title>SSATB</title>
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+ </head>
+ <body>
+    <header>
+      <div class="container">
+        <h1 class="logo">Spotify Status As Twitter Bio</h1>
+      </div>
+    </header>
+
+    <form action="/twitter_login" method="post">
+        <button name="twitter_login" type="submit">Twitter Login</button>
+    </form>
+    <form action="/spotify_login" method="post">
+        <button name="spotify_login" type="submit">Spotify Login</button>
+    </form>
+    <br/>
+    <label for="fname">Twitter Auth Code:</label>
+    <input type="text" id="twitter_auth_code" name="twitter_auth_code">
+    <br/>
+    <label for="fname">Spotify Redirect URI:</label>
+    <input type="text" id="spotify_redirect_uri" name="spotify_redirect_uri">
+
+    
+ </body>
+</html>
